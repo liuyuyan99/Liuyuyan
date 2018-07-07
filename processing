@@ -1,0 +1,109 @@
+boolean flagg=false;
+import
+ processing.serial.*;
+           Serial myPort;
+              int S;  
+              import
+ddf.minim.*;
+Minim minim;
+AudioPlayer player1;
+    AudioPlayer player2;   
+    AudioPlayer player3;  
+    AudioPlayer player4;
+    PImage img1;
+    PImage img2;
+    PImage img3;
+    PImage img4;
+    PFont font;
+void setup(){size(600,300);
+font=createFont("Forte",32);
+textFont(font);
+img1=loadImage("caomei.jpg");
+img2=loadImage("zhu.gif");
+img3=loadImage("wan3.jpg");
+img4=loadImage("mian.jpg");
+myPort = new Serial(this,"COM3", 9600);
+minim = new
+Minim(this);
+player4 = minim.loadFile("eyu.mp3");
+player3 = minim.loadFile("shuidi.mp3");
+player2 = minim.loadFile("tong.mp3");
+player1 = minim.loadFile("dead.mp3");}
+
+void mousePressed(){
+  
+  flagg=true;
+}
+
+boolean flag=true;
+int x=50,y=20,drift,score=0,n=0;
+
+void draw(){
+background(200,0,0);  image(img4,0,0);
+fill(0);
+
+    player2.play();
+  textSize(50);
+  stroke(0,200,100);
+  text("click to start",150,260);
+  
+  if(flagg==true){
+
+  image(img1,0,0);
+
+  if ( myPort.available() > 0) {  // 如果有新数据输入
+                     S = myPort.read();         // 就将串口收到数据给val
+                          }
+                      println(S); 
+  int popo=20*S;
+  image(img2,popo-100,100);
+
+  player4.play();
+  
+  loop();
+  
+  strokeWeight(30);
+  if(flag==true){
+        player2.close();
+    x=(int)random(20,width-20);
+    drift=(int)random(256*6);
+    flag=false;
+     
+  }
+  myStroke(2*y+drift,120);
+  line(x,y,x,y+5);
+  y+=3;
+  if(y>height){y=20;flag=true;n++;}
+  
+  stroke(0);
+  strokeWeight(5);
+  line(popo-50,height-5,popo+50,height-5);
+
+
+if(y>height-3 && x<popo+50 && x>popo-50){
+  score++;
+  player3.play();
+  
+}
+
+
+
+
+  textSize(40);fill(200,0,100);text("score="+score,250,30);
+  if(n-score>=5){
+    player1.play();
+    player4.close();
+   
+    background(100,0,50);
+    textSize(70);
+    text("Game Over!",150,170);
+     image(img3,0,0);
+  }
+  }
+}
+
+
+
+
+
+
